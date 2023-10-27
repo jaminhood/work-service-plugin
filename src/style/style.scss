@@ -1,0 +1,77 @@
+@font-face {
+ font-family: "sansationBold";
+ src: url("../assets/fonts/sansation/Sansation_Bold.ttf") format("truetype");
+}
+
+@font-face {
+ font-family: "sansationRegular";
+ src: url("../assets/fonts/sansation/Sansation_Regular.ttf") format("truetype");
+}
+
+@font-face {
+ font-family: "sansationLight";
+ src: url("../assets/fonts/sansation/Sansation_Light.ttf") format("truetype");
+}
+
+@font-face {
+ font-family: "jostRegular";
+ src: url("../assets/fonts/jost/static/Jost-Regular.ttf") format("truetype");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.overflow-lines {
+ --tw-bg-opacity: 1;
+ overflow-y: auto !important;
+ scrollbar-width: thin;
+ scrollbar-color: rgb(94 74 150 / var(--tw-border-opacity)) rgb(243 244 246 / var(--tw-border-opacity));
+
+ &::-webkit-scrollbar {
+  width: 0.3rem;
+ }
+
+ &::-webkit-scrollbar-thumb {
+  @apply bg-main-primary;
+ }
+
+ &::-webkit-scrollbar-track {
+  --tw-bg-opacity: 1;
+  background: rgb(243 244 246 / var(--tw-border-opacity));
+ }
+}
+
+.slick-dots {
+ position: absolute;
+ display: flex !important;
+ bottom: 0rem !important;
+ width: fit-content;
+ left: 50%;
+ transform: translateX(-50%);
+ border-radius: 0.5rem;
+ background: rgba(44, 44, 44, 0.5);
+
+ button {
+  &::before {
+   content: "" !important;
+   width: 0.5rem !important;
+   height: 0.5rem !important;
+   border-radius: 50%;
+   background: #fff;
+   position: absolute !important;
+   top: 50% !important;
+   left: 50% !important;
+   transform: translate(-50%, -50%);
+  }
+ }
+}
+
+.customer__categories {
+ padding-bottom: 2rem;
+
+ .slick-dots {
+  bottom: -2rem !important;
+  background: rgba(44, 44, 44, 0.5);
+ }
+}

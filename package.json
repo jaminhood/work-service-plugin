@@ -1,0 +1,39 @@
+{
+  "name": "work-service",
+  "version": "1.0.0",
+  "description": "Work Service WordPress Plugin",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npx webpack --mode=production --watch",
+    "tailwindwatch": "npx tailwindcss -i ./src/style/style.scss -o ./dist/style.css --watch"
+  },
+  "keywords": [
+    "Wordpress",
+    "Plugin"
+  ],
+  "author": "Jaminhood",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.22.10",
+    "@babel/preset-react": "^7.22.5",
+    "axios": "^1.5.0",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^6.8.1",
+    "file-loader": "^6.2.0",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
+    "react-slick": "^0.29.0",
+    "recharts": "^2.7.3",
+    "sass": "^1.65.1",
+    "slick-carousel": "^1.8.1",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}
