@@ -1,173 +1,165 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { ServiceContext } from "./ServiceContext"
 import { SITE_URL } from "../../../constants"
 import AdminProvider from "../../context/AdminProvider"
+import { ServiceContext } from "./ServiceContext"
 
-const ServiceProvider = (props) => {
- const [openedForm, setOpenedForm] = useState(0)
- const [categories, setCategories] = useState([])
- const [subCategories, setSubCategories] = useState([])
- const [services, setServices] = useState([])
- const [editCategory, setEditCategory] = useState([])
- const [editService, setEditService] = useState([])
+const ServiceProvider = props => {
+	const [openedForm, setOpenedForm] = useState(0)
+	const [categories, setCategories] = useState([])
+	const [subCategories, setSubCategories] = useState([])
+	const [services, setServices] = useState([])
+	const [editCategory, setEditCategory] = useState([])
+	const [editService, setEditService] = useState([])
 
- const getAllCategories = async () => {
-  await axios.get(`${SITE_URL}wp-json/ws-api/v1/categories/get`).then((res) => {
-   setCategories(res.data)
-  })
- }
+	const getAllCategories = async () => await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/categories`).then(res => setCategories(res.data))
 
- const getAllSubCategories = async () => {
-  await axios.get(`${SITE_URL}wp-json/ws-api/v1/sub-categories/get-all`).then((res) => {
-   setSubCategories(res.data)
-  })
- }
+	const getAllSubCategories = async () => await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/sub-categories`).then(res => setSubCategories(res.data))
 
- const getAllServices = async () => {
-  await axios.get(`${SITE_URL}wp-json/ws-api/v1/services/get-all`).then((res) => {
-   setServices(res.data)
-  })
- }
+	const getAllServices = async () => await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/services`).then(res => setServices(res.data))
 
- useEffect(async () => {
-  await getAllCategories()
-  await getAllSubCategories()
-  await getAllServices()
- }, [])
+	const fetchData = async () => {
+		await getAllCategories()
+		await getAllSubCategories()
+		await getAllServices()
+	}
 
- const openAction = (formId) => {
-  if (openedForm === formId) {
-   setOpenedForm(0)
-  } else {
-   setOpenedForm(formId)
-  }
-  setEditCategory([])
- }
+	useEffect(() => {
+		fetchData()
+	}, [])
 
- const handleCategoryEdit = (category) => {
-  openAction(2)
-  setEditCategory(category)
- }
+	const openAction = formId => {
+		if (openedForm === formId) {
+			setOpenedForm(0)
+		} else {
+			setOpenedForm(formId)
+		}
+		setEditCategory([])
+	}
 
- const handleCategoryDelete = async (id) => {
-  try {
-   await axios.delete(`${SITE_URL}wp-json/ws-api/v1/category/web/delete?category_id=${id}`)
+	const handleCategoryEdit = category => {
+		openAction(2)
+		setEditCategory(category)
+	}
 
-   location.reload()
-  } catch (e) {
-   throw new Error(e.message)
-  }
- }
+	const handleCategoryDelete = async id => {
+		try {
+			await axios.delete(`${SITE_URL}wp-json/ws-api/v1/admin/category?category_id=${id}`)
 
- const handleCategoryForm = async (params, formType) => {
-  const { categoryTitle, categoryIconID } = params
+			location.reload()
+		} catch (e) {
+			throw new Error(e.message)
+		}
+	}
 
-  const cannotSubmit = categoryTitle.trim() === `` && categoryIconID === 0
+	const handleCategoryForm = async (params, formType) => {
+		const { categoryTitle, categoryIconID } = params
 
-  try {
-   if (cannotSubmit) {
-    throw new Error(`Empty Field(s)`)
-   }
+		const cannotSubmit = categoryTitle.trim() === `` && categoryIconID === 0
 
-   const newParams = {
-    category_name: categoryTitle,
-    category_icon: categoryIconID,
-   }
-   await axios.post(`${SITE_URL}wp-json/ws-api/v1/category/post`, newParams)
+		try {
+			if (cannotSubmit) {
+				throw new Error(`Empty Field(s)`)
+			}
 
-   location.reload()
-  } catch (e) {
-   throw new Error(e.message)
-  }
- }
+			const newParams = {
+				category_name: categoryTitle,
+				category_icon: categoryIconID,
+			}
+			await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/categories`, newParams)
 
- const handleSubCategoryDelete = async (id) => {
-  try {
-   await axios.delete(`${SITE_URL}wp-json/ws-api/v1/sub-category/delete?sub_category_id=${id}`)
+			location.reload()
+		} catch (e) {
+			throw new Error(e.message)
+		}
+	}
 
-   location.reload()
-  } catch (e) {
-   throw new Error(e.message)
-  }
- }
+	const handleSubCategoryDelete = async id => {
+		try {
+			await axios.delete(`${SITE_URL}wp-json/ws-api/v1/admin/sub-category?sub_category_id=${id}`)
 
- const handleSubCategoryForm = async (params) => {
-  const { subCategoryTitle, imgID, formCategory } = params
-  try {
-   const newParams = {
-    category_id: formCategory,
-    sub_category_name: subCategoryTitle,
-    sub_category_icon: imgID,
-   }
+			location.reload()
+		} catch (e) {
+			throw new Error(e.message)
+		}
+	}
 
-   await axios.post(`${SITE_URL}wp-json/ws-api/v1/sub-category/post`, newParams)
+	const handleSubCategoryForm = async params => {
+		const { subCategoryTitle, imgID, formCategory } = params
+		try {
+			const newParams = {
+				category_id: formCategory,
+				sub_category_name: subCategoryTitle,
+				sub_category_icon: imgID,
+			}
 
-   location.reload()
-  } catch (e) {
-   throw new Error(e.message)
-  }
- }
+			await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/sub-category`, newParams)
 
- const handleServiceEdit = (service) => {
-  openAction(1)
-  setEditService(service)
- }
+			location.reload()
+		} catch (e) {
+			throw new Error(e.message)
+		}
+	}
 
- const handleServiceDelete = async (id) => {
-  try {
-   await axios.delete(`${SITE_URL}wp-json/ws-api/v1/services/web/delete?service_id=${id}`)
+	const handleServiceEdit = service => {
+		openAction(1)
+		setEditService(service)
+	}
 
-   location.reload()
-  } catch (e) {
-   throw new Error(e.message)
-  }
- }
+	const handleServiceDelete = async id => {
+		try {
+			await axios.delete(`${SITE_URL}wp-json/ws-api/v1/admin/service?service_id=${id}`)
 
- const handleServiceForm = async (params) => {
-  const { serviceTitle, imgID, formSubCategory } = params
-  try {
-   const newParams = {
-    service_name: serviceTitle,
-    sub_category_id: formSubCategory,
-    service_icon: imgID,
-   }
+			location.reload()
+		} catch (e) {
+			throw new Error(e.message)
+		}
+	}
 
-   await axios.post(`${SITE_URL}wp-json/ws-api/v1/services/post`, newParams)
+	const handleServiceForm = async params => {
+		const { serviceTitle, imgID, formSubCategory } = params
+		try {
+			const newParams = {
+				service_name: serviceTitle,
+				sub_category_id: formSubCategory,
+				service_icon: imgID,
+			}
 
-   location.reload()
-  } catch (e) {
-   throw new Error(e.message)
-  }
- }
+			await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/services`, newParams)
 
- const providerValues = {
-  openedForm,
-  openAction,
-  categories,
-  editCategory,
-  handleCategoryEdit,
-  handleCategoryDelete,
-  handleCategoryForm,
-  subCategories,
-  handleSubCategoryDelete,
-  handleSubCategoryForm,
-  services,
-  editService,
-  handleServiceEdit,
-  handleServiceDelete,
-  handleServiceForm,
- }
+			location.reload()
+		} catch (e) {
+			throw new Error(e.message)
+		}
+	}
 
- return (
-  <AdminProvider>
-   <ServiceContext.Provider value={providerValues}>
-    <div>
-     <div className="grid grid-cols-2 gap-4">{props.children}</div>
-    </div>
-   </ServiceContext.Provider>
-  </AdminProvider>
- )
+	const providerValues = {
+		openedForm,
+		openAction,
+		categories,
+		editCategory,
+		handleCategoryEdit,
+		handleCategoryDelete,
+		handleCategoryForm,
+		subCategories,
+		handleSubCategoryDelete,
+		handleSubCategoryForm,
+		services,
+		editService,
+		handleServiceEdit,
+		handleServiceDelete,
+		handleServiceForm,
+	}
+
+	return (
+		<AdminProvider>
+			<ServiceContext.Provider value={providerValues}>
+				<div>
+					<div className="grid grid-cols-2 gap-4">{props.children}</div>
+				</div>
+			</ServiceContext.Provider>
+		</AdminProvider>
+	)
 }
 
 export default ServiceProvider

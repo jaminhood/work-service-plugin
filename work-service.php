@@ -44,9 +44,9 @@ if (!class_exists('WS')) {
 			register_deactivation_hook(__FILE__, [$this, 'deactivate']);
 
 			# Rewrite rules
-			add_action('init', [$rewrite_rules, 'rewrite_rules']);
-			add_filter('query_vars', [$rewrite_rules, 'query_vars']);
-			add_action('template_include', [$rewrite_rules, 'template_include']);
+			// add_action('init', [$rewrite_rules, 'rewrite_rules']);
+			// add_filter('query_vars', [$rewrite_rules, 'query_vars']);
+			// add_action('template_include', [$rewrite_rules, 'template_include']);
 
 			# Enqueing Media
 			add_action('admin_enqueue_scripts', array($this, 'media_uploader'));
@@ -58,6 +58,8 @@ if (!class_exists('WS')) {
 			# Enqueing Scripts
 			add_action('admin_enqueue_scripts', [$this, 'load_scripts']);
 			add_action('wp_enqueue_scripts', [$this, 'load_scripts']);
+
+			add_action('wp_enqueue_scripts', [$this, 'enqueue_ajax_nonce']);
 		}
 
 		/**
@@ -93,6 +95,13 @@ if (!class_exists('WS')) {
 		public function media_uploader(): void
 		{
 			wp_enqueue_media();
+		}
+
+		public	function enqueue_ajax_nonce()
+		{
+			$ajax_nonce = wp_create_nonce('ajax_nonce');
+			wp_enqueue_script('custom-scripts', WS_URL . 'dist/bundle.js', array(), null, true);
+			wp_localize_script('custom-scripts', 'ajax_nonce', $ajax_nonce);
 		}
 	}
 
