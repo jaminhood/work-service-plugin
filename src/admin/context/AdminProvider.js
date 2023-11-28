@@ -182,6 +182,14 @@ const AdminProvider = ({ children }) => {
 		})
 	}
 
+	const handleDelete = async stmt => {
+		await axios.delete(`${SITE_URL}wp-json/ws-api/v1/admin/${stmt}`).then(res => {
+			if (res.status === 200) {
+				location.reload()
+			}
+		})
+	}
+
 	const providerValues = {
 		modalIsOpen,
 		setModalIsOpen,
@@ -211,6 +219,7 @@ const AdminProvider = ({ children }) => {
 		handleTeamSubmit,
 		handleTeamEdit,
 		handleContactSubmit,
+		handleDelete,
 	}
 
 	return (

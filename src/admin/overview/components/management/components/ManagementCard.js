@@ -1,24 +1,14 @@
-import axios from "axios"
 import { BsTrashFill } from "react-icons/bs"
 import { ImPencil2 } from "react-icons/im"
-import { SITE_URL } from "../../../../../constants"
 import useAdminContext from "../../../../context/useAdminContext"
 import EditManagementModal from "./EditManagementModal"
 
 const ManagementCard = ({ person }) => {
-	const { modalIsOpen, setModalIsOpen, resetModalIsOpen } = useAdminContext()
+	const { modalIsOpen, setModalIsOpen, resetModalIsOpen, handleDelete } = useAdminContext()
 
-	const handleDelete = async () => {
-		await axios.delete(`${SITE_URL}wp-json/ws-api/v1/admin/team?team_id=${person.teamID}`).then(res => {
-			if (res.status === 200) {
-				location.reload()
-			}
-		})
-	}
+	const deleteClicked = async () => await handleDelete(`team?team_id=${person.teamID}`)
 
-	const handleEdit = () => {
-		setModalIsOpen("edit-management")
-	}
+	const handleEdit = () => setModalIsOpen("edit-management")
 
 	return (
 		<>
@@ -50,7 +40,7 @@ const ManagementCard = ({ person }) => {
 						</button>
 						<button
 							type="button"
-							onClick={handleDelete}
+							onClick={deleteClicked}
 							className="p-2 transition-all duration-300 ease-in-out bg-green-100 border rounded-lg cursor-pointer text-main-primary border-main-primary hover:bg-main-primary hover:text-green-100 focus:outline-none">
 							<BsTrashFill size={20} />
 						</button>

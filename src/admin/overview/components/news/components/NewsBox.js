@@ -1,15 +1,10 @@
-import axios from "axios"
 import { BsTrashFill } from "react-icons/bs"
-import { SITE_URL } from "../../../../../constants"
+import useAdminContext from "../../../../context/useAdminContext"
 
 const NewsBox = ({ banner }) => {
-	const handleDelete = async () => {
-		await axios.delete(`${SITE_URL}wp-json/ws-api/v1/admin/news?newsID=${banner.newsID}`).then(res => {
-			if (res.status === 200) {
-				location.reload()
-			}
-		})
-	}
+	const { handleDelete } = useAdminContext()
+
+	const deleteClicked = async () => await handleDelete(`news?newsID=${banner.newsID}`)
 
 	return (
 		<div className="flex items-center justify-between gap-4 py-2 my-1 border-y border-y-main-primary">
@@ -24,7 +19,7 @@ const NewsBox = ({ banner }) => {
 				<div className="flex gap-2">
 					<button
 						type="button"
-						onClick={handleDelete}
+						onClick={deleteClicked}
 						className="p-2 transition-all duration-300 ease-in-out bg-green-100 border rounded-lg cursor-pointer text-main-primary border-main-primary hover:bg-main-primary hover:text-green-100 focus:outline-none">
 						<BsTrashFill size={20} />
 					</button>
