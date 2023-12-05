@@ -44,15 +44,15 @@ const AdminProvider = ({ children }) => {
 	const loadTeam = async () => await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/team`).then(res => setTeam(res.data))
 
 	const loadContact = async () => {
-		await axios.get(`${SITE_URL}wp-json/ws-api/v1/contact/get`).then(res => {
-			setContact(res.data)
-		})
+		// await axios.get(`${SITE_URL}wp-json/ws-api/v1/contact/get`).then(res => {
+		// 	setContact(res.data)
+		// })
 	}
 
 	const loadBookings = async () => {
-		await axios.get(`${SITE_URL}wp-json/ws-api/v1/bookings/web/get?user_id=0`).then(res => {
-			setBookings(res.data)
-		})
+		// await axios.get(`${SITE_URL}wp-json/ws-api/v1/bookings/web/get?user_id=0`).then(res => {
+		// 	setBookings(res.data)
+		// })
 	}
 
 	const getAllCategories = async () => {
@@ -84,18 +84,18 @@ const AdminProvider = ({ children }) => {
 			.then(async () => await loadBookings())
 	}, [])
 
-	useEffect(() => {
-		let msgs
-		if (activeChat.user_id !== undefined) {
-			msgs = setInterval(async () => {
-				await axios.get(`${SITE_URL}wp-json/ws-api/v1/chats/web/get-user?user_id=${activeChat?.user_id}&booking_id=${activeChat?.booking_id}`).then(res => {
-					setMessages(res.data)
-				})
-			}, 500)
-		}
+	// useEffect(() => {
+	// 	let msgs
+	// 	if (activeChat.user_id !== undefined) {
+	// 		msgs = setInterval(async () => {
+	// 			await axios.get(`${SITE_URL}wp-json/ws-api/v1/chats/web/get-user?user_id=${activeChat?.user_id}&booking_id=${activeChat?.booking_id}`).then(res => {
+	// 				setMessages(res.data)
+	// 			})
+	// 		}, 500)
+	// 	}
 
-		return () => clearInterval(msgs)
-	}, [activeChat])
+	// 	return () => clearInterval(msgs)
+	// }, [activeChat])
 
 	const handleActiveChat = async booking => {
 		setActiveChat(booking)

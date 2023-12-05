@@ -93,7 +93,7 @@ const ServiceProvider = props => {
 				sub_category_icon: imgID,
 			}
 
-			await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/sub-category`, newParams)
+			await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/sub-categories`, newParams)
 
 			location.reload()
 		} catch (e) {
