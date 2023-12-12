@@ -18,6 +18,7 @@ const AdminProvider = ({ children }) => {
 	const [reason, setReason] = useState([])
 	const [team, setTeam] = useState([])
 	const [contact, setContact] = useState([])
+	const [downloadLinks, setDownloadLinks] = useState([])
 	const [modalIsOpen, setModalIsOpen] = useState("")
 
 	// const postConfig = { headers: { "Content-Type": "application/json", "X-WP-Nonce": wpNonce } }
@@ -42,6 +43,8 @@ const AdminProvider = ({ children }) => {
 	const loadReason = async () => await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/reason`).then(res => setReason(res.data))
 
 	const loadTeam = async () => await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/team`).then(res => setTeam(res.data))
+
+	const loadDownloads = async () => await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/downloads`).then(res => setDownloadLinks(res.data))
 
 	const loadContact = async () => {
 		// await axios.get(`${SITE_URL}wp-json/ws-api/v1/contact/get`).then(res => {
@@ -78,6 +81,7 @@ const AdminProvider = ({ children }) => {
 			.then(async () => await loadAbout())
 			.then(async () => await loadReason())
 			.then(async () => await loadTeam())
+			.then(async () => await loadDownloads())
 			.then(async () => await loadContact())
 			.then(async () => await getAllCategories())
 			.then(async () => await getAllServices())
@@ -174,8 +178,24 @@ const AdminProvider = ({ children }) => {
 		await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/team/update`, params).then(res => res.data === `Upload Successful` && location.reload())
 	}
 
+	const handleDownloadSubmit = async params => {
+		await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/downloads`, params).then(res => {
+			if (res.data === `Upload Successful`) {
+				location.reload()
+			}
+		})
+	}
+
 	const handleContactSubmit = async params => {
-		await axios.post(`${SITE_URL}wp-json/ws-api/v1/contact/post`, params).then(res => {
+		await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/contact`, params).then(res => {
+			if (res.data === `Upload Successful`) {
+				location.reload()
+			}
+		})
+	}
+
+	const handleFAQSubmit = async params => {
+		await axios.post(`${SITE_URL}wp-json/ws-api/v1/admin/faqs`, params).then(res => {
 			if (res.data === `Upload Successful`) {
 				location.reload()
 			}
@@ -208,6 +228,7 @@ const AdminProvider = ({ children }) => {
 		activeChat,
 		messages,
 		editBooking,
+		downloadLinks,
 		handleActiveChat,
 		handleBooking,
 		handleMessage,
@@ -219,6 +240,8 @@ const AdminProvider = ({ children }) => {
 		handleTeamSubmit,
 		handleTeamEdit,
 		handleContactSubmit,
+		handleDownloadSubmit,
+		handleFAQSubmit,
 		handleDelete,
 	}
 

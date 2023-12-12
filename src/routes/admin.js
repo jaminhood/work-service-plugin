@@ -1,7 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import ChatsPage from "../admin/chats"
-import CustomersPage from "../admin/customers"
+import { Contact } from "../admin/contact"
+import { FAQs } from "../admin/faqs"
 import OrdersPage from "../admin/orders"
 import OverviewPage from "../admin/overview"
 import ServicesPage from "../admin/services"
@@ -23,13 +24,18 @@ export const AdminRoutes = () => {
 		ReactDOM.render(<OrdersPage />, document.getElementById("ws-admin-orders-app"))
 	}
 
-	element = document.getElementById("ws-admin-customers-app")
-	if (typeof element !== "undefined" && element !== null) {
-		ReactDOM.render(<CustomersPage />, document.getElementById("ws-admin-customers-app"))
-	}
-
 	element = document.getElementById("ws-admin-chats-app")
 	if (typeof element !== "undefined" && element !== null) {
 		ReactDOM.render(<ChatsPage />, document.getElementById("ws-admin-chats-app"))
+	}
+
+	element = document.getElementById("ws-admin-faqs-app")
+	if (typeof element !== "undefined" && element !== null) {
+		ReactDOM.render(<FAQs />, document.getElementById("ws-admin-faqs-app"))
+	}
+
+	element = document.getElementById("ws-admin-contact-app")
+	if (typeof element !== "undefined" && element !== null) {
+		ReactDOM.render(<Contact />, document.getElementById("ws-admin-contact-app"))
 	}
 }

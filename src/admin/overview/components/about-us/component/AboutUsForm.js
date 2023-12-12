@@ -13,11 +13,13 @@ const AboutUsForm = () => {
 
 	const getAboutData = async () =>
 		await axios.get(`${SITE_URL}wp-json/ws-api/v1/admin/about`).then(({ data }) => {
-			setAboutStory(data[0].aboutStory)
-			setExpertise(data[0].expertise)
-			setConvenience(data[0].convenience)
-			setTrust(data[0].trust)
-			setInnovation(data[0].innovation)
+			if (data.length > 0) {
+				setAboutStory(data[0].aboutStory)
+				setExpertise(data[0].expertise)
+				setConvenience(data[0].convenience)
+				setTrust(data[0].trust)
+				setInnovation(data[0].innovation)
+			}
 		})
 
 	useEffect(() => {

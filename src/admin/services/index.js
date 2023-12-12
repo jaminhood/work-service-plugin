@@ -4,13 +4,13 @@ import MainSubCategories from "./components/main-sub-categories"
 import ServiceProvider from "./context/ServiceProvider"
 
 const ServicesPage = () => {
- return (
-  <ServiceProvider>
-   <MainCategories />
-   <MainSubCategories />
-   <MainServices />
-  </ServiceProvider>
- )
+	return (
+		<ServiceProvider>
+			<MainCategories />
+			<MainSubCategories />
+			<MainServices />
+		</ServiceProvider>
+	)
 }
 
 export default ServicesPage
